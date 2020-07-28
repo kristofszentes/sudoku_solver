@@ -12,7 +12,7 @@ largeur = 480
 myfont = pygame.font.SysFont("Arial",30,True)
 
 #la grille en fond
-background = pygame.image.load("sudoku_grid.png")
+background = pygame.image.load("background_grid.png")
 
 #On charge la première grille
 grid = np.genfromtxt('grids/grid1.csv', delimiter=',', dtype='int')
