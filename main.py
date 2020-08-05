@@ -1,21 +1,23 @@
 import pygame
 import numpy as np
-from solver import *
+from utilities import *
 
 pygame.init()
 
-#taille de la fenetre
+#dimensions of the window
 hauteur = 540
 largeur = 480
 
-#la police
+#the font
 myfont = pygame.font.SysFont("Arial",30,True)
 
-#la grille en fond
+#the background image
 background = pygame.image.load("background_grid.png")
 
-#On charge la première grille
-grid = np.genfromtxt('grids/grid1.csv', delimiter=',', dtype='int')
+#the puzzle we want to solve
+puzzle = 'grids/grid1.csv'
+
+grid = np.genfromtxt(puzzle, delimiter=',', dtype='int')
 
 class Jeu():
 	def __init__(self,grid):
@@ -24,33 +26,34 @@ class Jeu():
 		self.solving = False
 		self.grid = np.copy(self.grid_initial)
 
-	def maj_ecran(self,ecran,grille): #l'affichage
+	def maj_ecran(self,ecran,grille): #the display
 
-		#le fond blanc et la grille
+		#the black background and the grid background
 		ecran.fill((255,255,255))
 		ecran.blit(background,(0,0))
 
-		#les nombres
+		#the numbers
 		for i in range(9):
 			for j in range(9):
 				if grille[i][j] != 0:
 					texte_nbre = myfont.render(str(grille[i][j]),1,(0,0,0))
-					ecran.blit(texte_nbre,(25+50*j,25+50*i))
+					ecran.blit(texte_nbre,(30+50*j,25+50*i))
 
-		#les boutons
+		#the buttons
 		pygame.draw.rect(ecran,(202,204,206),(20,480,100,50))
 		texte_solve = myfont.render("Solve",1,(0,0,0))
 		ecran.blit(texte_solve,(25,490))
 
-		#Le texte Solving...
+		#The "Solving..." text
 		if self.solving:
 			texte_solving = myfont.render("Solving...",1,(0,0,0))
 			ecran.blit(texte_solving,(200,490))
 
 		pygame.display.update()
 
-	def backtracking(self,test,i,j,grid,ecran):
+	def backtracking(self,test,i,j,grid,ecran): #the backtracking algorithm
 		if self.solving:
+			pygame.time.delay(10)
 			self.maj_ecran(ecran,test)
 			x,y = dernier_zero(grid)
 			if test[x][y] != 0:
@@ -68,7 +71,7 @@ class Jeu():
 						else:
 							self.backtracking(autre_grid,i,j,grid,ecran)
 
-	def run(self):
+	def run(self): #the main function
 		screen = pygame.display.set_mode((largeur,hauteur))
 		pygame.display.set_caption("Sudoku")
 
@@ -78,13 +81,13 @@ class Jeu():
 
 			pygame.time.delay(30)
 
-			#pour fermer la fenetre
+			#to close the window
 			events = pygame.event.get()
 			for event in events:
 				if event.type == pygame.QUIT:
 					cont = False
 
-			#lorsqu'on appuie sur le bouton
+			#when we press the "solve" button
 			if pygame.mouse.get_pressed()[0]:
 				x,y = pygame.mouse.get_pos()
 

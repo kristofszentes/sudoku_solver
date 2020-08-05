@@ -1,6 +1,6 @@
 import numpy as np
 
-def contient_double(vec): #verifie si un vecteur contient un double (en ne considerant pas les 0 qui sont les cases vides)
+def contient_double(vec): #checks if a vector contains one element twice
 	reste = np.array(vec)
 	for i in range(len(vec)):
 		reste = np.delete(reste,0)
@@ -9,19 +9,19 @@ def contient_double(vec): #verifie si un vecteur contient un double (en ne consi
 
 	return False
 
-def check_juste(grid):#verifie si la grille donnee est valide
+def check_juste(grid):#checks if the given grid is valid
 	
-	#verifie chaque ligne
+	#checking every line
 	for i in range(9):
 		if contient_double(grid[i]):
 			return False
 
-	#verifie chaque colonne
+	#checking every column
 	for j in range(9):
 		if contient_double(grid[:,j]):
 			return False
 
-	#verifie chaque petit carre
+	#checking every square
 	for k in range(3):
 		for l in range(3):
 			petit_carre = []
@@ -34,7 +34,7 @@ def check_juste(grid):#verifie si la grille donnee est valide
 
 	return True
 
-def suivant(i,j,grid):
+def suivant(i,j,grid):#returns the next 0 in the grid
 	if j < 8 and grid[i][j+1] == 0:
 		return (i,j+1)
 	elif j < 8:
@@ -44,13 +44,13 @@ def suivant(i,j,grid):
 	else:
 		return suivant(i+1,0,grid)
 
-def premier_zero(grid):
+def premier_zero(grid):#returns the first 0 in the grid
 	for i in range(9):
 		for j in range(9):
 			if grid[i][j] == 0:
 				return i,j
 
-def dernier_zero(grid):
+def dernier_zero(grid):#returns the last 0 in the grid
 	k,l = 0,0
 	for i in range(9):
 		for j in range(9):
@@ -58,18 +58,4 @@ def dernier_zero(grid):
 				k,l = i,j
 	return k,l
 
-def backtracking(test,i,j,grid):
-	x,y = dernier_zero(grid)
-	if test[x][y] != 0:
-		print(test)
-	else:
-		for k in range(1,10):
-			autre_grid = np.copy(test)
-			autre_grid[i][j] = k
-			if check_juste(autre_grid):
-				if (i,j) != (x,y):
-					i_bis,j_bis = suivant(i,j,grid)
-					backtracking(autre_grid,i_bis,j_bis,grid)
-				else:
-					backtracking(autre_grid,i,j,grid)
 
