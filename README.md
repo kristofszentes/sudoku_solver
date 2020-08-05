@@ -1,6 +1,10 @@
 # sudoku_solver
 This is a Sudoku solver which uses bactracking and shows a visualisation of how the algorithm finds the solution.
 
+## Packages needed
+numpy,pygame
+
+## About the solver
 You can change the puzzle by changing the loaded csv file in the main.py file.
 You can try it with your own puzzle, you just have to create a csv file that is similar to those in the grids folder.
 
